@@ -24,7 +24,7 @@
                             </svg>
                         </ul>
                         <li>- {{ object.category }}</li>
-                        <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+                        <a href="{% url 'catalog:view_product' pk=object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Открыть</a>
                     </div>
                 </div>
             </div>
