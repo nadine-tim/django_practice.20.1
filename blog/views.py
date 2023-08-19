@@ -6,32 +6,25 @@ from blog.models import Post
 from pytils.translit import slugify
 
 
-class PostCreateView(CreateView):
+class MixinSlug:
+    def form_valid(self, form):
+        if form.is_valid():
+            new_post = form.save()
+            new_post.slug = slugify(new_post.title)
+            new_post.save()
+
+        return super().form_valid(form)
+
+class PostCreateView(MixinSlug, CreateView):
     model = Post
     fields = ('title', 'text', 'preview')
     success_url = reverse_lazy('blog:list')
 
-    def form_valid(self, form):
-        if form.is_valid():
-            new_post = form.save()
-            new_post.slug = slugify(new_post.title)
-            new_post.save()
 
-        return super().form_valid(form)
-
-
-class PostUpdateView(UpdateView):
+class PostUpdateView(MixinSlug, UpdateView):
     model = Post
     fields = ('title', 'text', 'preview', 'is_published')
     #success_url = reverse_lazy('blog:list')
-
-    def form_valid(self, form):
-        if form.is_valid():
-            new_post = form.save()
-            new_post.slug = slugify(new_post.title)
-            new_post.save()
-
-        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('blog:view', args=[self.kwargs.get('pk')])

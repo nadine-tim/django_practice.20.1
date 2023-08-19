@@ -2,20 +2,39 @@
 
 {% block content %}
     {% load my_tags %}
-    <div class="col-3">
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">{{ object.name|title }}</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">{{ object.name|title }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ object.price }} ₽</h1>
+                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                            <h6 class="text-muted">{{ object.category }}</h6>
+                            <img src="{% mediapath object.image %}" class="img-thumbnail" alt="...">
+                            </svg>
+                            <li>{{ object.description }}</li>
+                        </ul>
+                        <a href="{% url 'catalog:home' %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h1 class="card-title pricing-card-title">{{ object.price }} ₽</h1>
-                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                    <li>- {{ object.description }}</li>
-                    <img src="{% mediapath object.image %}" class="img-thumbnail" alt="...">
-                    </svg>
-                </ul>
-                <li>- {{ object.category }}</li>
-                <a href="{% url 'catalog:home' %}" class="btn btn-lg btn-block btn-outline-primary">Назад</a>
+            <div class="col-6">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h3>Последняя версия продукта</h3>
+                    </div>
+                    <div class="card-body">
+                        {{ formset.management_form }}
+                        {% for form in formset.forms %}
+                            {% if forloop.last %}
+                                {{ form.as_p }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
